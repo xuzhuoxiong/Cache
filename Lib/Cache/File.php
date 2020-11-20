@@ -49,7 +49,7 @@ class File implements CacheInterfaces
      * @param $ttl
      * @return bool
      */
-    public function save($key, $value, $ttl)
+    public function save($key, $value, $ttl=3600)
     {
         if (!$key || !$value) {
             return false;
@@ -57,7 +57,7 @@ class File implements CacheInterfaces
         $ttl       = $ttl <= 0 ? 3600 : $ttl;
         $cacheFile = $this->getCacheFile($key);
         $cacheDir  = dirname($cacheFile);
-        if (!$cacheDir) {
+        if (!file_exists($cacheDir)) {
             if (!mkdir($cacheDir, 0777, true)) {
                 return false;
             }
@@ -121,9 +121,9 @@ class File implements CacheInterfaces
      * @param $value
      * @return bool
      */
-    public function decrement($key, $value)
+    public function decrement($key, $value=1)
     {
-        return $this->increment($key,$value);
+        return $this->increment($key,-$value);
     }
 
     /**
@@ -170,6 +170,7 @@ class File implements CacheInterfaces
             @rmdir($dir);//rmdir只可以删除空目录 放置位置不同删除目录的效果不同 注意体会
         }
         closedir($handle);
+        return true;
 
     }
 

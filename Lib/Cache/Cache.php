@@ -17,6 +17,7 @@ class Cache
      * @param $className
      * @param $options
      */
+
     public static function Factory($cacheType,$options=[])
     {
         try{
